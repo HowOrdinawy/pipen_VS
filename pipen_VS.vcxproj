@@ -18,6 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\ButtonSystem.cpp" />
+    <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\system.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\gameStuff.hpp" />
+    <ClInclude Include="src\pipenStuff.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -151,19 +163,6 @@
       <AdditionalDependencies>SDL2.lib;SDL2_ttf.lib;SDL2_image.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\Pipen\src\gameStuff.hpp" />
-    <ClInclude Include="..\..\Pipen\src\pipenStuff.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\Pipen\src\blank.cpp" />
-    <ClCompile Include="..\..\Pipen\src\Button.cpp" />
-    <ClCompile Include="..\..\Pipen\src\ButtonSystem.cpp" />
-    <ClCompile Include="..\..\Pipen\src\Entity.cpp" />
-    <ClCompile Include="..\..\Pipen\src\main.cpp" />
-    <ClCompile Include="..\..\Pipen\src\Scene.cpp" />
-    <ClCompile Include="..\..\Pipen\src\system.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
