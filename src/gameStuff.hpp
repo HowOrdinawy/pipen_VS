@@ -130,10 +130,12 @@ namespace game
         SDL_Texture *texture;
         SDL_Rect rectangle;
         bool displayed = true;
+        uint16_t entID;
     public:
-        SpriteRenderer(SDL_Texture *text, SDL_Rect rect){
+        SpriteRenderer(SDL_Texture *text, SDL_Rect rect, uint16_t id){
             texture = text;
             rectangle = rect;
+            entID = id;
         }
         ~SpriteRenderer(){
             //SDL_DestroyTexture(texture);
@@ -141,6 +143,10 @@ namespace game
         bool isDisplayed(){
             return displayed;
         }
+        void setDisplayed(bool display){
+            displayed = display;
+        }
+
         void drawSprite(SDL_Renderer *renderer){
             if(!displayed) return;
             SDL_RenderCopy(renderer, texture, NULL, &rectangle);
@@ -171,11 +177,12 @@ namespace game
         std::vector<std::vector<game::SpriteRenderer> *> layersUI;
 
         Camera * sceneCamera;
-
+        Scene * scenePtr = scene;
 
     public:
-        SpriteRenderSystem(Camera *cam) {
+        SpriteRenderSystem(Camera *cam, Scene scene) {
             sceneCamera = cam;
+            scenePtr = scene;
         }
 
         ~SpriteRenderSystem()
@@ -269,6 +276,10 @@ namespace game
             entities[e.getID()] = e;
         }
 
+        Entity * getEntityPtr(uint16_t id){
+            return &entities[id];
+        }
+
         uint16_t getNextEntityID(){
             return entity_counter++;
         }
@@ -332,11 +343,13 @@ namespace game
     private:
         SDL_Rect rectangle;
         std::function<void(game::Scene *)> function;
+        uint16_t entID;
     public:
-        Button(SDL_Rect rect, std::function<void(game::Scene *)> func)
+        Button(SDL_Rect rect, std::function<void(game::Scene *)> func, uint16_t id)
         {
             rectangle = rect;
             function = func;
+            entID = id;
         }
 
         bool onButton(int x, int y)
@@ -346,6 +359,10 @@ namespace game
         }
 
         void pressButton(Scene* scene);
+
+        void setActive(bool active, Scene * scene){
+            scene->getEntityPtr(entID)->getComponent("SpriteRenderer")->setDisplayed(active);
+        }
     };
 
     struct ButtonLayer {
@@ -373,6 +390,7 @@ namespace game
 
             return false;
         }
+
         void pressButtonAt(int x, int y, Scene *scene) {
             for (auto & button: buttons) {
                 if (button.onButton(x, y)) {
@@ -381,9 +399,10 @@ namespace game
                 }
             }
         }
-        void setLayerActive(bool active){
+
+        void setLayerActive(bool active, Scene scene){
            for(auto & button: buttons){
-               button.setActive(active);
+               button.setActive(active, scene);
            }
         }
     };
@@ -393,9 +412,11 @@ namespace game
     private:
         //std::vector<Button> buttons;
         std::vector<ButtonLayer> layers;
+        Scene * scenePtr;
     public:
-        ButtonSystem()
+        ButtonSystem(Scene * scene)
         {
+            scenePtr = scene;
             printf("button sys made\n");
         }
         virtual ~ButtonSystem(){}
@@ -427,6 +448,10 @@ namespace game
             return false;
         }
         void pressButtonAt(int x, int y, Scene *sys);
+
+        void setLayerActive(uint16_t layer, bool active){
+            layers[layer].setActiveLayer(active, scenePtr);
+        }
     };
 
 } // namespace game
