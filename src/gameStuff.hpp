@@ -142,9 +142,11 @@ namespace game
             return displayed;
         }
         void drawSprite(SDL_Renderer *renderer){
+            if(!displayed) return;
             SDL_RenderCopy(renderer, texture, NULL, &rectangle);
         }
         void drawSpriteOffset(SDL_Renderer *renderer, Camera * camera){
+            if(!displayed) return;
             SDL_Rect offsetRectangle;
             offsetRectangle.x = rectangle.x * camera->getScale() + camera->getOffSetX();
             offsetRectangle.y = rectangle.y * camera->getScale() + camera->getOffSetY();
@@ -378,6 +380,11 @@ namespace game
                     return;
                 }
             }
+        }
+        void setLayerActive(bool active){
+           for(auto & button: buttons){
+               button.setActive(active);
+           }
         }
     };
 
