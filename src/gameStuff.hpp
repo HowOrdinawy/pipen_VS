@@ -31,8 +31,20 @@ namespace game
         virtual void upadatePhysics(){}
         virtual ~System(){}
     };
-    struct Component{};
+    struct Component{
+        private:
+        uint16_t entID;
+        
+        public:
+        Component(uint16_t id){
+            entID = id;
+        }
 
+        uint16_t getEntID(){
+            return entID;
+        }
+    };
+    
     struct Entity
     {
     private:
@@ -130,12 +142,12 @@ namespace game
         SDL_Texture *texture;
         SDL_Rect rectangle;
         bool displayed = true;
-        uint16_t entID;
+
     public:
-        SpriteRenderer(SDL_Texture *text, SDL_Rect rect, uint16_t id){
+        SpriteRenderer(SDL_Texture *text, SDL_Rect rect, uint16_t id) : Component(id){
             texture = text;
             rectangle = rect;
-            entID = id;
+            
         }
         ~SpriteRenderer(){
             //SDL_DestroyTexture(texture);
@@ -343,9 +355,9 @@ namespace game
     private:
         SDL_Rect rectangle;
         std::function<void(game::Scene *)> function;
-        uint16_t entID;
+       
     public:
-        Button(SDL_Rect rect, std::function<void(game::Scene *)> func, uint16_t id)
+        Button(SDL_Rect rect, std::function<void(game::Scene *)> func, uint16_t id) : Component(id)
         {
             rectangle = rect;
             function = func;
