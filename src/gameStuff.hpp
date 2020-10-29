@@ -361,7 +361,7 @@ namespace game
         {
             rectangle = rect;
             function = func;
-            entID = id;
+            
         }
 
         bool onButton(int x, int y)
